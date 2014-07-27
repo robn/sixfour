@@ -1,0 +1,26 @@
+{
+  "uuid": "af47fa5c-478f-434d-9341-1d8fdafaa621",
+  "shortName": "SixFour",
+  "longName": "SixFour v1.0.1",
+  "companyName": "robn.io",
+  "versionCode": 10010,
+  "versionLabel": "1.0.1",
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+      "score":1,
+      "overs":2,
+      "lead":3,
+      "striker_name":4,
+      "striker_stats":5,
+      "nonstriker_name":6,
+      "nonstriker_stats":7,
+      "bowler_name":8,
+      "bowler_stats":9
+  },
+  "resources": {
+    "media": [
+    ]
+  }
+}
