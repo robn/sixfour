@@ -6,6 +6,8 @@ SixFour is a live cricket scoreboard for Pebble watches
 
 ![](screenshots/pebble-screenshot_2014-07-26_21-15-20.png)
 ![](screenshots/pebble-screenshot_2014-07-27_15-53-24.png)
+![](screenshots/pebble-screenshot_2014-07-27_21-22-20.png)
+![](screenshots/pebble-screenshot_2014-07-27_21-23-08.png)
 
 ## setup
 
@@ -37,7 +39,6 @@ pebble install --phone <ip>
 - [ ] recent event line
 - [ ] handle long names sanely
 - [ ] test with limited-overs, four-day, other formats
-- [ ] better handling for completed and future matches
 - [ ] last update time
 
 ## credits and license
