@@ -66,7 +66,7 @@ function update () {
                             var innings = data.innings.filter(function (innings) { return innings.live_current == 1; })[0];
 
                             out.score = [
-                                teams[innings.batting_team_id].team_abbreviation + " " + innings.runs,
+                                teams[innings.batting_team_id].team_filename + " " + innings.runs,
                                 (innings.wickets < 10) ? "/"+innings.wickets : "",
                                 ((innings.event && innings.event == "declared") ? "d" : "")
                             ].join('');
