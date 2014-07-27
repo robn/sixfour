@@ -110,18 +110,24 @@ function update () {
                             }
 
                             if (striker) {
-                                out.striker_name = players[striker.player_id].card_short + (nonstriker ? "*" : "");
+                                var striker_name = players[striker.player_id].card_short;
+                                if (striker_name.length > 10) striker_name = players[striker.player_id].popular_name;
+                                out.striker_name = striker_name + (nonstriker ? "*" : "");
                                 out.striker_stats = striker.runs+" ("+striker.balls_faced+")";
                             }
 
                             if (nonstriker) {
-                                out.nonstriker_name = players[nonstriker.player_id].card_short;
+                                var nonstriker_name = players[nonstriker.player_id].card_short;
+                                if (nonstriker_name.length > 10) nonstriker_name = players[nonstriker.player_id].popular_name;
+                                out.nonstriker_name = nonstriker_name;
                                 out.nonstriker_stats = nonstriker.runs+" ("+nonstriker.balls_faced+")";
                             }
 
                             var bowler = data.live.bowling.filter(function (player) { return player.live_current_name == "current bowler"; })[0];
                             if (bowler) {
-                                out.bowler_name = players[bowler.player_id].card_short;
+                                var bowler_name = players[bowler.player_id].card_short;
+                                if (bowler_name.length > 10) bowler_name = players[bowler.player_id].popular_name;
+                                out.bowler_name = bowler_name;
                                 out.bowler_stats = bowler.overs+"-"+bowler.maidens+"-"+bowler.conceded+"-"+bowler.wickets;
                             }
 

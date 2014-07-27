@@ -38,7 +38,7 @@ pebble install --phone <ip>
 - [ ] match chooser via settings
 - [ ] multiple matches
 - [ ] recent event line
-- [ ] handle long names sanely
+- [ ] handle long names smarter
 - [ ] test with limited-overs, four-day, other formats
 - [ ] last update time
 
