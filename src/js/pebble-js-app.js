@@ -31,9 +31,11 @@ function update () {
                         });
                     });
 
-                    console.log("match type: "+data.match.match_status);
+                    var match_status = data.match.result_short_name === "" ? data.match.match_status : "complete";
 
-                    switch (data.match.match_status) {
+                    console.log("match status: "+match_status);
+
+                    switch (match_status) {
                         case "dormant":
                             out.score = data.match.team1_filename+" v "+data.match.team2_filename;
                             out.lead = "Match starts in "+data.match.match_clock;
