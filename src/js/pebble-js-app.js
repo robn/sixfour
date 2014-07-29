@@ -65,7 +65,7 @@ function update () {
                         }
 
                         case "current": {
-                            var innings = data.innings.filter(function (innings) { return innings.live_current == 1; })[0];
+                            var innings = data.live.innings;
 
                             out.score = [
                                 teams[innings.batting_team_id].team_filename + " " + innings.runs,
