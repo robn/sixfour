@@ -83,7 +83,7 @@ function update () {
                                     default:
                                         out.lead =
                                             "Target "+(-innings.lead)+" in "+
-                                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls+" balls" : innings.remaining_overs+" overs");
+                                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls+"b" : innings.remaining_overs+"ov");
                                         break;
                                 }
                             }
