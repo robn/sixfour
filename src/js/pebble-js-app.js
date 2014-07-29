@@ -82,8 +82,8 @@ function update () {
                                         break;
                                     default:
                                         out.lead =
-                                            "Target "+(-innings.lead)+" in "+
-                                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls+"b" : innings.remaining_overs+"ov");
+                                            "Need "+(-innings.lead)+" in "+
+                                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls+" b" : innings.remaining_overs+" ov");
                                         break;
                                 }
                             }
@@ -93,7 +93,7 @@ function update () {
                                         out.lead = "First innings";
                                         break;
                                     case 4:
-                                        out.lead = "Target "+(-innings.lead);
+                                        out.lead = "Target "+(innings.target);
                                         break;
                                     default:
                                         out.lead =
