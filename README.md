@@ -35,7 +35,6 @@ pebble install --phone <ip>
 
 ## todo
 
-- [ ] match chooser via settings
 - [ ] multiple matches
 - [ ] recent event line
 - [ ] handle long names smarter

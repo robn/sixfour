@@ -1,8 +1,24 @@
-var matchid = "667715";
-
 function update () {
+    var out = {
+        "score":"",
+        "overs":"",
+        "lead":"",
+        "striker_name":"",
+        "striker_stats":"",
+        "nonstriker_name":"",
+        "nonstriker_stats":"",
+        "bowler_name":"",
+        "bowler_stats":""
+    };
+    var matchId = localStorage.getItem("matchId");
+    if (!matchId) {
+        out.striker_name = "No match selected";
+        out.nonstriker_name = "in config.";
+        Pebble.sendAppMessage(out);
+        return;
+    }
     var req = new XMLHttpRequest();
-    req.open('GET', "http://www.espncricinfo.com/ci/engine/match/"+matchid+".json");
+    req.open('GET', "http://www.espncricinfo.com/ci/engine/match/"+matchId+".json");
     req.onload = function(e) {
         if (req.readyState == 4) {
             if(req.status == 200) {
@@ -10,17 +26,6 @@ function update () {
 
                 var data = JSON.parse(req.responseText);
                 if (data) {
-                    var out = {
-                        "score":"",
-                        "overs":"",
-                        "lead":"",
-                        "striker_name":"",
-                        "striker_stats":"",
-                        "nonstriker_name":"",
-                        "nonstriker_stats":"",
-                        "bowler_name":"",
-                        "bowler_stats":""
-                    };
 
                     var teams = {};
                     var players = {};
@@ -157,4 +162,17 @@ Pebble.addEventListener("ready", function (e) {
 Pebble.addEventListener("appmessage", function (e) {
     console.log("tick, doing update");
     update();
+});
+
+Pebble.addEventListener("showConfiguration", function (e) {
+    console.log("config requested");
+    Pebble.openURL("http://eatenbyagrue.org/a/sixfour.psgi");
+});
+
+Pebble.addEventListener("webviewclosed", function (e) {
+    console.log("config closed, response: "+e.response);
+    if (e.response !== "CANCELLED") {
+        localStorage.setItem("matchId", e.response);
+        update();
+    }
 });

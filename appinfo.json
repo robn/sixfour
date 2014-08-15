@@ -5,6 +5,7 @@
   "companyName": "robn.io",
   "versionCode": 10010,
   "versionLabel": "1.0.1",
+  "capabilities": [ "configurable" ],
   "watchapp": {
     "watchface": true
   },
