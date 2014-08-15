@@ -31,12 +31,13 @@ function update () {
                     var players = {};
                     data.team.forEach(function (team) {
                         teams[team.team_id] = team;
-                        team.player.forEach(function (player) {
+                        var playerList = team.player || team.squad;
+                        playerList.forEach(function (player) {
                             players[player.player_id] = player;
                         });
                     });
 
-                    var match_status = data.match.result_short_name === "" ? data.match.match_status : "complete";
+                    var match_status = data.match.match_status || "complete";
 
                     console.log("match status: "+match_status);
 
@@ -45,7 +46,7 @@ function update () {
                             out.score = data.match.team1_filename+" v "+data.match.team2_filename;
                             out.lead = "Match starts in "+data.match.match_clock;
 
-                            if (data.match.toss_decision !== "") {
+                            if (data.match.toss_decision && data.match.toss_decision !== "") {
                                 out.striker_name = data.match["team"+data.match.toss_winner_team_id+"_short_name"]+" won toss,";
                                 out.nonstriker_name = "will "+data.match.toss_decision_name;
                             }
