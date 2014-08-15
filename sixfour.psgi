@@ -1,11 +1,11 @@
 #!/usr/bin/env plackup
 
-use 5.010;
+use 5.020;
 use warnings;
 use strict;
 
 use HTTP::Tiny;
-use JSON::XS;
+use XML::RSS;
 use Template;
 
 my $template = do { local $/; <DATA> };
@@ -13,11 +13,9 @@ my $template = do { local $/; <DATA> };
 my $app = sub {
     my ($env) = @_;
 
-    my $data = decode_json(HTTP::Tiny->new->get('http://www.espncricinfo.com/ci/content/rss/extension.json')->{content});
+    my $data = XML::RSS->new->parse(HTTP::Tiny->new->get('http://static.cricinfo.com/rss/livescores.xml')->{content});
 
-    my %matches = map {
-        $_->{id} => (join(' ', grep { $_ } ($_->{b1}, $_->{b1d}, 'v', $_->{b2}, $_->{b2d})) =~ s/\s+/ /gr)
-    } @{$data->{matches}};
+    my %matches = map { [$_->{guid} =~ m/(\d+)/]->[0] => ($_->{description} =~ s/\s+/ /gr) } @{$data->{items}};
 
     my %stash = (
         matches => \%matches,
