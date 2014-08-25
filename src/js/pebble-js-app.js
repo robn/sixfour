@@ -84,7 +84,7 @@ function update () {
                             if (+data.match.scheduled_overs > 0) {
                                 switch (+innings.innings_number) {
                                     case 1:
-                                        out.lead = "First innings";
+                                        out.lead = "Run rate: "+innings.run_rate;
                                         break;
                                     default:
                                         out.lead =
