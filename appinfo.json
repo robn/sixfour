@@ -1,10 +1,10 @@
 {
   "uuid": "af47fa5c-478f-434d-9341-1d8fdafaa621",
   "shortName": "SixFour",
-  "longName": "SixFour v1.0.1",
+  "longName": "SixFour v1.1",
   "companyName": "robn.io",
-  "versionCode": 10010,
-  "versionLabel": "1.0.1",
+  "versionCode": 1010,
+  "versionLabel": "1.1",
   "capabilities": [ "configurable" ],
   "watchapp": {
     "watchface": true
