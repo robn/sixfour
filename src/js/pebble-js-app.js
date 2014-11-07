@@ -88,7 +88,7 @@ function update () {
                                         break;
                                     default:
                                         out.lead =
-                                            "Need "+(-innings.lead)+" in "+
+                                            "Need "+(1-innings.lead)+" in "+
                                             (innings.remaining_overs <= 10.0 ? innings.remaining_balls+" b" : innings.remaining_overs+" ov");
                                         break;
                                 }
