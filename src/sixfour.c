@@ -20,6 +20,16 @@ static TextLayer *nonstriker_name_text_layer;
 static TextLayer *nonstriker_stats_text_layer;
 static TextLayer *bowler_name_text_layer;
 static TextLayer *bowler_stats_text_layer;
+TextLayer *text_time_layer;
+TextLayer *text_date_layer;
+Layer *line_layer;
+
+
+void line_layer_update_callback(Layer *layer, GContext* ctx) {
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
+}
+
 
 static AppSync sync;
 static uint8_t sync_buffer[256];
@@ -73,12 +83,48 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
     }
 }
 
-static void handle_second_tick(struct tm* tick_time, TimeUnits units_changed) {
+static void handle_minute_tick(struct tm* tick_time, TimeUnits units_changed) 
+{
     APP_LOG(APP_LOG_LEVEL_DEBUG, "tick");
 
+    static char time_text[] = "00:00";
+    static char date_text[] = "00/00/0000";
+
+    char *time_format;
+  
+    if (!tick_time) {
+      time_t now = time(NULL);
+      tick_time = localtime(&now);
+    }
+
+    // TODO: Only update the date when it's changed.
+    strftime(date_text, sizeof(date_text), "%d/%m/%Y", tick_time);
+    text_layer_set_text(text_date_layer, date_text);
+  
+    if (clock_is_24h_style()) {
+      time_format = "%R";
+    } else {
+      time_format = "%I:%M";
+    }
+  
+    strftime(time_text, sizeof(time_text), time_format, tick_time);
+  
+    // Kludge to handle lack of non-padded hour format string
+    // for twelve hour clock.
+    if (!clock_is_24h_style() && (time_text[0] == '0')) {
+      memmove(time_text, &time_text[1], sizeof(time_text) - 1);
+    }
+    
+    text_layer_set_text(text_time_layer, time_text);
+        
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
     app_message_outbox_send();
+    
+}
+
+void handle_deinit(void) {
+  tick_timer_service_unsubscribe();
 }
 
 static void window_load(Window *window) {
@@ -107,47 +153,66 @@ static void window_load(Window *window) {
     text_layer_set_text_alignment(lead_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(lead_text_layer));
 
-    striker_name_text_layer = text_layer_create(GRect(0, 60, 144, 28));
+    striker_name_text_layer = text_layer_create(GRect(0, 58, 144, 28));
     text_layer_set_text_color(striker_name_text_layer, GColorWhite);
     text_layer_set_background_color(striker_name_text_layer, GColorClear);
     text_layer_set_font(striker_name_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(striker_name_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(striker_name_text_layer));
 
-    striker_stats_text_layer = text_layer_create(GRect(0, 60, 144, 28));
+    striker_stats_text_layer = text_layer_create(GRect(0, 58, 144, 28));
     text_layer_set_text_color(striker_stats_text_layer, GColorWhite);
     text_layer_set_background_color(striker_stats_text_layer, GColorClear);
     text_layer_set_font(striker_stats_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(striker_stats_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(striker_stats_text_layer));
 
-    nonstriker_name_text_layer = text_layer_create(GRect(0, 84, 144, 28));
+    nonstriker_name_text_layer = text_layer_create(GRect(0, 82, 144, 28));
     text_layer_set_text_color(nonstriker_name_text_layer, GColorWhite);
     text_layer_set_background_color(nonstriker_name_text_layer, GColorClear);
     text_layer_set_font(nonstriker_name_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(nonstriker_name_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(nonstriker_name_text_layer));
 
-    nonstriker_stats_text_layer = text_layer_create(GRect(0, 84, 144, 28));
+    nonstriker_stats_text_layer = text_layer_create(GRect(0, 82, 144, 28));
     text_layer_set_text_color(nonstriker_stats_text_layer, GColorWhite);
     text_layer_set_background_color(nonstriker_stats_text_layer, GColorClear);
     text_layer_set_font(nonstriker_stats_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(nonstriker_stats_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(nonstriker_stats_text_layer));
 
-    bowler_name_text_layer = text_layer_create(GRect(0, 116, 144, 28));
+    bowler_name_text_layer = text_layer_create(GRect(0, 112, 144, 28));
     text_layer_set_text_color(bowler_name_text_layer, GColorWhite);
     text_layer_set_background_color(bowler_name_text_layer, GColorClear);
     text_layer_set_font(bowler_name_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(bowler_name_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(bowler_name_text_layer));
 
-    bowler_stats_text_layer = text_layer_create(GRect(0, 116, 144, 28));
+    bowler_stats_text_layer = text_layer_create(GRect(0, 112, 144, 28));
     text_layer_set_text_color(bowler_stats_text_layer, GColorWhite);
     text_layer_set_background_color(bowler_stats_text_layer, GColorClear);
     text_layer_set_font(bowler_stats_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(bowler_stats_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(bowler_stats_text_layer));
+  
+    GRect line_frame = GRect(0, 145, 144, 1);
+    line_layer = layer_create(line_frame);
+    layer_set_update_proc(line_layer, line_layer_update_callback);
+    layer_add_child(window_layer, line_layer);
+    
+    text_time_layer = text_layer_create(GRect(0, 142, 144, 24));
+    text_layer_set_text_color(text_time_layer, GColorWhite);
+    text_layer_set_background_color(text_time_layer, GColorClear);
+    text_layer_set_font(text_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+    text_layer_set_text_alignment(text_time_layer, GTextAlignmentLeft);
+    layer_add_child(window_layer, text_layer_get_layer(text_time_layer));
+  
+    text_date_layer = text_layer_create(GRect(0, 142, 144, 24));
+    text_layer_set_text_color(text_date_layer, GColorWhite);
+    text_layer_set_background_color(text_date_layer, GColorClear);
+    text_layer_set_font(text_date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+    text_layer_set_text_alignment(text_date_layer, GTextAlignmentRight);
+    layer_add_child(window_layer, text_layer_get_layer(text_date_layer));
 
     Tuplet initial_values[] = {
         TupletCString(SIXFOUR_SCORE_KEY, ""),
@@ -161,7 +226,7 @@ static void window_load(Window *window) {
         TupletCString(SIXFOUR_BOWLER_STATS_KEY, ""),
     };
 
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "want dict buffer: %d", (int) dict_calc_buffer_size_from_tuplets(initial_values, 8));
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "want dict buffer: %d", (int) dict_calc_buffer_size_from_tuplets(initial_values, 10));
 
     app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
             sync_tuple_changed_callback, sync_error_callback, NULL);
@@ -171,6 +236,7 @@ static void window_unload(Window *window) {
     app_sync_deinit(&sync);
 
     text_layer_destroy(score_text_layer);
+    text_layer_destroy(overs_text_layer);
     text_layer_destroy(lead_text_layer);
     text_layer_destroy(striker_name_text_layer);
     text_layer_destroy(striker_stats_text_layer);
@@ -194,8 +260,8 @@ static void init(void) {
     const bool animated = true;
     window_stack_push(window, animated);
 
-    tick_timer_service_subscribe(MINUTE_UNIT, &handle_second_tick);
-
+    tick_timer_service_subscribe(MINUTE_UNIT, &handle_minute_tick);
+      
     APP_LOG(APP_LOG_LEVEL_DEBUG, "init done");
 }
 
