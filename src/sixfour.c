@@ -96,53 +96,53 @@ static void window_load(Window *window) {
     overs_text_layer = text_layer_create(GRect(0, 0, 144, 28));
     text_layer_set_text_color(overs_text_layer, GColorWhite);
     text_layer_set_background_color(overs_text_layer, GColorClear);
-    text_layer_set_font(overs_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+    text_layer_set_font(overs_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
     text_layer_set_text_alignment(overs_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(overs_text_layer));
 
     lead_text_layer = text_layer_create(GRect(0, 28, 144, 28));
     text_layer_set_text_color(lead_text_layer, GColorWhite);
     text_layer_set_background_color(lead_text_layer, GColorClear);
-    text_layer_set_font(lead_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+    text_layer_set_font(lead_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
     text_layer_set_text_alignment(lead_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(lead_text_layer));
 
-    striker_name_text_layer = text_layer_create(GRect(0, 60, 144, 28));
+    striker_name_text_layer = text_layer_create(GRect(0, 50, 144, 28));
     text_layer_set_text_color(striker_name_text_layer, GColorWhite);
     text_layer_set_background_color(striker_name_text_layer, GColorClear);
     text_layer_set_font(striker_name_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(striker_name_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(striker_name_text_layer));
 
-    striker_stats_text_layer = text_layer_create(GRect(0, 60, 144, 28));
+    striker_stats_text_layer = text_layer_create(GRect(0, 50, 144, 28));
     text_layer_set_text_color(striker_stats_text_layer, GColorWhite);
     text_layer_set_background_color(striker_stats_text_layer, GColorClear);
     text_layer_set_font(striker_stats_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(striker_stats_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(striker_stats_text_layer));
 
-    nonstriker_name_text_layer = text_layer_create(GRect(0, 84, 144, 28));
+    nonstriker_name_text_layer = text_layer_create(GRect(0, 74, 144, 28));
     text_layer_set_text_color(nonstriker_name_text_layer, GColorWhite);
     text_layer_set_background_color(nonstriker_name_text_layer, GColorClear);
     text_layer_set_font(nonstriker_name_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(nonstriker_name_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(nonstriker_name_text_layer));
 
-    nonstriker_stats_text_layer = text_layer_create(GRect(0, 84, 144, 28));
+    nonstriker_stats_text_layer = text_layer_create(GRect(0, 74, 144, 28));
     text_layer_set_text_color(nonstriker_stats_text_layer, GColorWhite);
     text_layer_set_background_color(nonstriker_stats_text_layer, GColorClear);
     text_layer_set_font(nonstriker_stats_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(nonstriker_stats_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(nonstriker_stats_text_layer));
 
-    bowler_name_text_layer = text_layer_create(GRect(0, 116, 144, 28));
+    bowler_name_text_layer = text_layer_create(GRect(0, 102, 144, 28));
     text_layer_set_text_color(bowler_name_text_layer, GColorWhite);
     text_layer_set_background_color(bowler_name_text_layer, GColorClear);
     text_layer_set_font(bowler_name_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
     text_layer_set_text_alignment(bowler_name_text_layer, GTextAlignmentLeft);
     layer_add_child(window_layer, text_layer_get_layer(bowler_name_text_layer));
 
-    bowler_stats_text_layer = text_layer_create(GRect(0, 116, 144, 28));
+    bowler_stats_text_layer = text_layer_create(GRect(0, 102, 144, 28));
     text_layer_set_text_color(bowler_stats_text_layer, GColorWhite);
     text_layer_set_background_color(bowler_stats_text_layer, GColorClear);
     text_layer_set_font(bowler_stats_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
