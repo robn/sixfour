@@ -89,10 +89,19 @@ function unpack_data (data, out) {
                 nonstriker = null;
             }
 
+            var shorten = function (n) {
+                var bits = n.split(' ');
+                for (var i = 0; i < bits.length-1; i++)
+                    bits[i] = bits[i].substr(0,1);
+                return bits.join('.');
+            };
+
             if (striker) {
                 var striker_name = players[striker.player_id].card_short;
                 if (striker_name.length > 10 && players[striker.player_id].popular_name.length > 0)
                     striker_name = players[striker.player_id].popular_name;
+                if (striker_name.length > 10)
+                    striker_name = shorten(striker_name);
                 out.striker_name = striker_name + (nonstriker ? "*" : "");
                 out.striker_stats = striker.runs+" ("+striker.balls_faced+")";
             }
@@ -101,6 +110,8 @@ function unpack_data (data, out) {
                 var nonstriker_name = players[nonstriker.player_id].card_short;
                 if (nonstriker_name.length > 10 && players[nonstriker.player_id].popular_name.length > 0)
                     nonstriker_name = players[nonstriker.player_id].popular_name;
+                if (nonstriker_name.length > 10)
+                    nonstriker_name = shorten(nonstriker_name);
                 out.nonstriker_name = nonstriker_name;
                 out.nonstriker_stats = nonstriker.runs+" ("+nonstriker.balls_faced+")";
             }
