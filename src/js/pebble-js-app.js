@@ -60,8 +60,8 @@ function unpack_data (data, out) {
                         break;
                     default:
                         out.lead =
-                            "Need "+(1-innings.lead)+" in "+
-                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls+" b" : innings.remaining_overs+" ov");
+                            "Need "+(1-innings.lead)+" from "+
+                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls : innings.remaining_overs+" ov");
                         break;
                 }
             }
