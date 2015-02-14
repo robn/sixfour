@@ -73,7 +73,7 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
     }
 }
 
-static void handle_second_tick(struct tm* tick_time, TimeUnits units_changed) {
+static void handle_minute_tick(struct tm* tick_time, TimeUnits units_changed) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "tick");
 
     DictionaryIterator *iter;
@@ -194,7 +194,7 @@ static void init(void) {
     const bool animated = true;
     window_stack_push(window, animated);
 
-    tick_timer_service_subscribe(MINUTE_UNIT, &handle_second_tick);
+    tick_timer_service_subscribe(MINUTE_UNIT, &handle_minute_tick);
 
     APP_LOG(APP_LOG_LEVEL_DEBUG, "init done");
 }
