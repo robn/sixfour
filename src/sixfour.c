@@ -161,7 +161,7 @@ static void window_load(Window *window) {
         TupletCString(SIXFOUR_BOWLER_STATS_KEY, ""),
     };
 
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "want dict buffer: %d", (int) dict_calc_buffer_size_from_tuplets(initial_values, 8));
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "want dict buffer: %d", (int) dict_calc_buffer_size_from_tuplets(initial_values, 9));
 
     app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
             sync_tuple_changed_callback, sync_error_callback, NULL);
