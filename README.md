@@ -21,11 +21,6 @@ git clone https://github.com/robn/sixfour.git
 cd sixfour
 ```
 
-Visit [ESPNcricinfo](http://www.espncricinfo.com/) and view the match you want
-to display. Extract its six-digit match ID from the URL. Edit
-`src/js/pebble-js-app.js` and put this value into the `matchid` variable at the
-top.
-
 Then build and install:
 
 ```bash
@@ -37,7 +32,6 @@ pebble install --phone <ip>
 
 - [ ] multiple matches
 - [ ] recent event line
-- [ ] handle long names smarter
 - [ ] test with limited-overs, four-day, other formats
 - [ ] last update time
 
