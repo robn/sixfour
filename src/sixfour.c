@@ -20,6 +20,7 @@ static TextLayer *nonstriker_name_text_layer;
 static TextLayer *nonstriker_stats_text_layer;
 static TextLayer *bowler_name_text_layer;
 static TextLayer *bowler_stats_text_layer;
+static TextLayer *time_text_layer;
 
 static AppSync sync;
 static uint8_t sync_buffer[256];
@@ -75,6 +76,19 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 
 static void handle_minute_tick(struct tm* tick_time, TimeUnits units_changed) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "tick");
+
+    if (!tick_time) {
+        time_t now = time(NULL);
+        tick_time = localtime(&now);
+    }
+
+    char *time_format = clock_is_24h_style() ? "%R" : "%l:%M";
+
+    static char buf[10];
+    strftime(buf, sizeof(buf), time_format, tick_time);
+    buf[sizeof(buf)-1] = '\0';
+
+    text_layer_set_text(time_text_layer, buf);
 
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
@@ -149,6 +163,13 @@ static void window_load(Window *window) {
     text_layer_set_text_alignment(bowler_stats_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(bowler_stats_text_layer));
 
+    time_text_layer = text_layer_create(GRect(0, 150, 144, 28));
+    text_layer_set_text_color(time_text_layer, GColorWhite);
+    text_layer_set_background_color(time_text_layer, GColorClear);
+    text_layer_set_font(time_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_text_alignment(time_text_layer, GTextAlignmentRight);
+    layer_add_child(window_layer, text_layer_get_layer(time_text_layer));
+
     Tuplet initial_values[] = {
         TupletCString(SIXFOUR_SCORE_KEY, ""),
         TupletCString(SIXFOUR_OVERS_KEY, ""),
@@ -178,6 +199,7 @@ static void window_unload(Window *window) {
     text_layer_destroy(nonstriker_stats_text_layer);
     text_layer_destroy(bowler_name_text_layer);
     text_layer_destroy(bowler_stats_text_layer);
+    text_layer_destroy(time_text_layer);
 }
 
 static void init(void) {
