@@ -15,7 +15,7 @@ function unpack_data (data, out) {
 
     switch (match_status) {
         case "dormant":
-            out.score = data.match.team1_filename+" v "+data.match.team2_filename;
+            out.score = data.match.team1_abbreviation.toUpperCase()+" v "+data.match.team2_abbreviation.toUpperCase();
             out.lead = "Match starts in "+data.match.match_clock;
 
             if (data.match.toss_decision && data.match.toss_decision !== "") {
@@ -25,7 +25,7 @@ function unpack_data (data, out) {
             break;
 
         case "complete": {
-            out.score = data.match.team1_filename+" v "+data.match.team2_filename;
+            out.score = data.match.team1_abbreviation.toUpperCase()+" v "+data.match.team2_abbreviation.toUpperCase();
 
             if (data.match.winner_team_id == "0") {
                 out.striker_name = "Match drawn";
@@ -46,7 +46,7 @@ function unpack_data (data, out) {
             var innings = data.live.innings;
 
             out.score = [
-                teams[innings.batting_team_id].team_filename + " " + innings.runs,
+                teams[innings.batting_team_id].team_abbreviation.toUpperCase() + " " + innings.runs,
                 (innings.wickets < 10) ? "/"+innings.wickets : "",
                 ((innings.event && innings.event == "declared") ? "d" : "")
             ].join('');
