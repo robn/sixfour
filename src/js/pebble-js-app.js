@@ -9,7 +9,9 @@ function unpack_data (data, out) {
         });
     });
 
-    var match_status = data.match.match_status || "complete";
+    var match_status = data.match.match_status;
+    if (!match_status || data.match.result !== "0")
+        match_status = "complete";
 
     console.log("match status: "+match_status);
 
