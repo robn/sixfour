@@ -13,6 +13,10 @@ function unpack_data (data, out) {
     if (!match_status || data.match.result !== "0")
         match_status = "complete";
 
+    if (match_status === "current" && !data.live.innings.batting_team_id) {
+        match_status = "dormant";
+    }
+
     console.log("match status: "+match_status);
 
     switch (match_status) {
