@@ -141,7 +141,8 @@ function new_out () {
         "nonstriker_name":"",
         "nonstriker_stats":"",
         "bowler_name":"",
-        "bowler_stats":""
+        "bowler_stats":"",
+        "fact":""
     };
     return out;
 }

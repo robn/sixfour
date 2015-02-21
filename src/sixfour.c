@@ -21,6 +21,7 @@ static TextLayer *nonstriker_stats_text_layer;
 static TextLayer *bowler_name_text_layer;
 static TextLayer *bowler_stats_text_layer;
 static TextLayer *time_text_layer;
+static TextLayer *fact_text_layer;
 
 static AppSync sync;
 static uint8_t sync_buffer[256];
@@ -34,7 +35,8 @@ enum SixFourKey {
   SIXFOUR_NONSTRIKER_NAME_KEY,
   SIXFOUR_NONSTRIKER_STATS_KEY,
   SIXFOUR_BOWLER_NAME_KEY,
-  SIXFOUR_BOWLER_STATS_KEY
+  SIXFOUR_BOWLER_STATS_KEY,
+  SIXFOUR_FACT_KEY
 };
 
 static void sync_error_callback(DictionaryResult dict_error, AppMessageResult app_message_error, void *context) {
@@ -70,6 +72,9 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
             break;
         case SIXFOUR_BOWLER_STATS_KEY:
             text_layer_set_text(bowler_stats_text_layer, new_tuple->value->cstring);
+            break;
+        case SIXFOUR_FACT_KEY:
+            text_layer_set_text(fact_text_layer, new_tuple->value->cstring);
             break;
     }
 }
@@ -170,6 +175,13 @@ static void window_load(Window *window) {
     text_layer_set_text_alignment(time_text_layer, GTextAlignmentRight);
     layer_add_child(window_layer, text_layer_get_layer(time_text_layer));
 
+    fact_text_layer = text_layer_create(GRect(0, 128, 144, 28));
+    text_layer_set_text_color(fact_text_layer, GColorWhite);
+    text_layer_set_background_color(fact_text_layer, GColorClear);
+    text_layer_set_font(fact_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_text_alignment(fact_text_layer, GTextAlignmentLeft);
+    layer_add_child(window_layer, text_layer_get_layer(fact_text_layer));
+
     Tuplet initial_values[] = {
         TupletCString(SIXFOUR_SCORE_KEY, ""),
         TupletCString(SIXFOUR_OVERS_KEY, ""),
@@ -180,6 +192,7 @@ static void window_load(Window *window) {
         TupletCString(SIXFOUR_NONSTRIKER_STATS_KEY, ""),
         TupletCString(SIXFOUR_BOWLER_NAME_KEY, ""),
         TupletCString(SIXFOUR_BOWLER_STATS_KEY, ""),
+        TupletCString(SIXFOUR_FACT_KEY, ""),
     };
 
     APP_LOG(APP_LOG_LEVEL_DEBUG, "want dict buffer: %d", (int) dict_calc_buffer_size_from_tuplets(initial_values, 9));
@@ -200,6 +213,7 @@ static void window_unload(Window *window) {
     text_layer_destroy(bowler_name_text_layer);
     text_layer_destroy(bowler_stats_text_layer);
     text_layer_destroy(time_text_layer);
+    text_layer_destroy(fact_text_layer);
 }
 
 static void init(void) {

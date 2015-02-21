@@ -18,7 +18,8 @@
       "nonstriker_name":6,
       "nonstriker_stats":7,
       "bowler_name":8,
-      "bowler_stats":9
+      "bowler_stats":9,
+      "fact":10
   },
   "resources": {
     "media": [
