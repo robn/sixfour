@@ -17,6 +17,11 @@ function unpack_data (data, out) {
         match_status = "dormant";
     }
 
+    // XXX fact
+    if (data.live["break"]) {
+        out.fact = data.live["break"];
+    }
+
     console.log("match status: "+match_status);
 
     switch (match_status) {
