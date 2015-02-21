@@ -27,7 +27,15 @@ function unpack_data (data, out) {
     switch (match_status) {
         case "dormant":
             out.score = data.match.team1_abbreviation.toUpperCase()+" v "+data.match.team2_abbreviation.toUpperCase();
-            out.lead = "Match starts in "+data.match.match_clock;
+
+            if (data.match.match_clock && data.match.match_clock !== "") {
+                out.lead = "Match starts in "+data.match.match_clock;
+            }
+            // XXX fact
+            else if (out.fact !== "") {
+                out.lead = out.fact;
+                out.fact = "";
+            }
 
             if (data.match.toss_decision && data.match.toss_decision !== "" && data.match.toss_decision !== "0") {
                 out.striker_name = teams[data.match.toss_winner_team_id].team_short_name+" won toss,";
