@@ -56,6 +56,9 @@ function unpack_data (data, out) {
                 }
                 else {
                     out.nonstriker_name = data.match.amount+" "+data.match.amount_name;
+                    if (data.match.amount_balls && data.match.amount_balls > 0) {
+                        out.bowler_name = "(" + data.match.amount_balls + " balls remaining)";
+                    }
                 }
             }
             break;
