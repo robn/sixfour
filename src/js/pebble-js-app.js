@@ -10,7 +10,7 @@ function unpack_data (data, out) {
     });
 
     var match_status = data.match.match_status;
-    if (!match_status || data.match.result !== "0")
+    if (!match_status && data.match.result !== "0")
         match_status = "complete";
 
     if (match_status === "current" && !data.live.innings.batting_team_id) {
