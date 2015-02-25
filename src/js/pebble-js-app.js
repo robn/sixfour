@@ -111,6 +111,15 @@ function unpack_data (data, out) {
                 nonstriker = null;
             }
 
+            var measure = function (n) {
+                var len = n.length;
+                var nspaces = (n.match(/ /g) || []).length;
+                var nwide   = (n.match(/[WwMm]/g) || []).length;
+                var nnarrow = (n.match(/[Iil]/g) || []).length;
+                var nnormal = n.length - nspaces - nwide - nnarrow;
+                return nnormal + nspaces*0.8 + nnarrow*0.5 + nwide*1.5;
+            };
+
             var shorten = function (n) {
                 var bits = n.split(' ');
                 for (var i = 0; i < bits.length-1; i++)
@@ -120,9 +129,9 @@ function unpack_data (data, out) {
 
             if (striker) {
                 var striker_name = players[striker.player_id].card_short;
-                if (striker_name.length > 10 && players[striker.player_id].popular_name.length > 0)
+                if (measure(striker_name) > 10 && players[striker.player_id].popular_name.length > 0)
                     striker_name = players[striker.player_id].popular_name;
-                if (striker_name.length > 10)
+                if (measure(striker_name) > 10)
                     striker_name = shorten(striker_name);
                 out.striker_name = striker_name;
                 out.striker_stats = striker.runs+" ("+striker.balls_faced+")";
@@ -130,9 +139,9 @@ function unpack_data (data, out) {
 
             if (nonstriker) {
                 var nonstriker_name = players[nonstriker.player_id].card_short;
-                if (nonstriker_name.length > 10 && players[nonstriker.player_id].popular_name.length > 0)
+                if (measure(nonstriker_name) > 10 && players[nonstriker.player_id].popular_name.length > 0)
                     nonstriker_name = players[nonstriker.player_id].popular_name;
-                if (nonstriker_name.length > 10)
+                if (measure(nonstriker_name) > 10)
                     nonstriker_name = shorten(nonstriker_name);
                 out.nonstriker_name = nonstriker_name;
                 out.nonstriker_stats = nonstriker.runs+" ("+nonstriker.balls_faced+")";
@@ -141,7 +150,10 @@ function unpack_data (data, out) {
             var bowler = data.live.bowling.filter(function (player) { return player.live_current_name == "current bowler"; })[0];
             if (bowler) {
                 var bowler_name = players[bowler.player_id].card_short;
-                if (bowler_name.length > 10) bowler_name = players[bowler.player_id].popular_name;
+                if (measure(bowler_name) > 10 && players[bowler.player_id].popular_name.length > 0)
+                    bowler_name = players[bowler.player_id].popular_name;
+                if (measure(bowler_name) > 10)
+                    bowler_name = shorten(bowler_name);
                 out.bowler_name = bowler_name;
                 out.bowler_stats = bowler.overs+"-"+bowler.maidens+"-"+bowler.conceded+"-"+bowler.wickets;
             }
