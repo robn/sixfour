@@ -124,7 +124,7 @@ function unpack_data (data, out) {
                     striker_name = players[striker.player_id].popular_name;
                 if (striker_name.length > 10)
                     striker_name = shorten(striker_name);
-                out.striker_name = striker_name + (nonstriker ? "*" : "");
+                out.striker_name = striker_name;
                 out.striker_stats = striker.runs+" ("+striker.balls_faced+")";
             }
 
