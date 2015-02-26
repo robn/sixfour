@@ -27,11 +27,15 @@ var player_pretty_name = function (p) {
 function unpack_data (data, out) {
     var teams = {};
     var players = {};
+    var playerByShortName = {};
+    var playerByLongName = {};
     data.team.forEach(function (team) {
         teams[team.team_id] = team;
         var playerList = team.player || team.squad;
         playerList.forEach(function (player) {
             players[player.player_id] = player;
+            playerByShortName[player.card_short] = player;
+            playerByLongName[player.card_long] = player;
         });
     });
 
@@ -43,21 +47,17 @@ function unpack_data (data, out) {
         match_status = "dormant";
     }
 
-    // XXX fact
-    if (data.live["break"]) {
-        out.fact = data.live["break"];
-    }
-
-    console.log("match status: "+match_status);
-
     switch (match_status) {
         case "dormant":
             out.score = data.match.team1_abbreviation.toUpperCase()+" v "+data.match.team2_abbreviation.toUpperCase();
 
+            if (data.live["break"]) {
+                out.fact = data.live["break"];
+            }
+
             if (data.match.match_clock && data.match.match_clock !== "") {
                 out.lead = "Match starts in "+data.match.match_clock;
             }
-            // XXX fact
             else if (out.fact !== "") {
                 out.lead = out.fact;
                 out.fact = "";
@@ -153,6 +153,71 @@ function unpack_data (data, out) {
                 out.bowler_stats = bowler.overs+"-"+bowler.maidens+"-"+bowler.conceded+"-"+bowler.wickets;
             }
 
+            var facts = [];
+
+            if (data.live["break"]) {
+                facts.push(data.live["break"]);
+            }
+
+            var factBall = localStorage.getItem("lastFactBall") || 0;
+
+            console.log("lastFactBall: "+factBall);
+
+            var newLastFactBall = factBall;
+            data.comms.forEach(function (over) {
+                over.ball.forEach(function (ball) {
+                    if (ball.overs_unique > newLastFactBall) {
+                        newLastFactBall = ball.overs_unique;
+                    }
+
+                    if (ball.event) {
+                        var fact;
+                        var evchar;
+
+                        var ev = ball.event.match(/OUT|SIX|FOUR/);
+                        if (ev) switch (ev[0]) {
+
+                            case "OUT":
+                                evchar = 'O';
+                                var dismissal =
+                                    ball.dismissal
+                                    .replace(/\s+/g, " ")
+                                    .replace("&dagger;", "\u2020")
+                                    .match(/(.+?) (lbw)?(run out|c|b) ((?:.(?! (?:b|\d+)))+.)/);
+
+                                fact = player_pretty_name(playerByShortName[dismissal[1]] || playerByLongName[dismissal[1]]) +
+                                        (dismissal[2] ? " lbw" : "") +
+                                        " " + dismissal[3] +
+                                        " " + dismissal[4];
+                                break;
+
+                            case "SIX":
+                            case "FOUR":
+                                evchar = ev[0] === "SIX" ? '6' : '4';
+                                var name = ball.players.match(/to (.+)$/)[1];
+                                fact = player_pretty_name(playerByShortName[name] || playerByLongName[name]);
+                                break;
+                        }
+
+                        if (fact) {
+                            facts.push([ball.overs_actual,evchar,fact].join(' '));
+                        }
+                    }
+                });
+            });
+
+            facts.forEach(function (fact) { console.log("FACT: "+fact); });
+
+            console.log("newLastFactBall: "+newLastFactBall);
+            if (newLastFactBall > factBall) {
+                localStorage.setItem("lastFactBall", newLastFactBall);
+            }
+
+            // XXX send the lot to watch and have it cycle
+            if (facts.length > 0) {
+                out.fact = facts[0];
+            }
+
             break;
         }
     }
@@ -224,6 +289,7 @@ Pebble.addEventListener("webviewclosed", function (e) {
     console.log("config closed, response: "+e.response);
     if (e.response !== "CANCELLED") {
         localStorage.setItem("matchId", e.response);
+        localStorage.setItem("lastFactBall", 0);
         update();
     }
 });
