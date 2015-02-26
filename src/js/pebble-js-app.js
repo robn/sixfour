@@ -172,13 +172,11 @@ function unpack_data (data, out) {
 
                     if (ball.event) {
                         var fact;
-                        var evchar;
 
                         var ev = ball.event.match(/OUT|SIX|FOUR/);
                         if (ev) switch (ev[0]) {
 
                             case "OUT":
-                                evchar = 'O';
                                 var dismissal =
                                     ball.dismissal
                                     .replace(/\s+/g, " ")
@@ -193,14 +191,13 @@ function unpack_data (data, out) {
 
                             case "SIX":
                             case "FOUR":
-                                evchar = ev[0] === "SIX" ? '6' : '4';
                                 var name = ball.players.match(/to (.+)$/)[1];
-                                fact = player_pretty_name(playerByShortName[name] || playerByLongName[name]);
+                                fact = ev[0] + " " + player_pretty_name(playerByShortName[name] || playerByLongName[name]);
                                 break;
                         }
 
                         if (fact) {
-                            facts.push([ball.overs_actual,evchar,fact].join(' '));
+                            facts.push([ball.overs_actual,fact].join(' '));
                         }
                     }
                 });
