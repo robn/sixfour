@@ -174,6 +174,10 @@ function unpack_data (data, out) {
                         var fact;
 
                         var ev = ball.event.match(/OUT|SIX|FOUR/);
+                        if (!ev && ball.dismissal) {
+                            ev = ["OUT"];
+                        }
+
                         if (ev) switch (ev[0]) {
 
                             case "OUT":
