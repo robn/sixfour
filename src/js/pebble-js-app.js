@@ -181,12 +181,11 @@ function unpack_data (data, out) {
                                     ball.dismissal
                                     .replace(/\s+/g, " ")
                                     .replace("&dagger;", "\u2020")
-                                    .match(/(.+?) (lbw)?(run out|c|b) ((?:.(?! (?:b|\d+)))+.)/);
+                                    .match(/(.+?) (lbw b|run out|c|b) ((?:.(?! (?:b|\d+)))+.)/);
 
                                 fact = player_pretty_name(playerByShortName[dismissal[1]] || playerByLongName[dismissal[1]]) +
-                                        (dismissal[2] ? " lbw" : "") +
-                                        " " + dismissal[3] +
-                                        " " + dismissal[4];
+                                        " " + dismissal[2] +
+                                        " " + dismissal[3];
                                 break;
 
                             case "SIX":
