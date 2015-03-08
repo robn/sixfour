@@ -185,7 +185,7 @@ function unpack_data (data, out) {
 
                                 fact = player_pretty_name(playerByShortName[dismissal[1]] || playerByLongName[dismissal[1]]) +
                                         " " + dismissal[2] +
-                                        " " + dismissal[3];
+                                        (dismissal[2] === "run out" ? "" : " " + dismissal[3]);
                                 break;
 
                             case "SIX":
