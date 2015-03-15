@@ -186,7 +186,7 @@ function unpack_data (data, out) {
                                     .replace(/\s+/g, " ")
                                     .replace("&dagger;", "\u2020")
                                     .replace("&amp;", "&")
-                                    .match(/(.+?) (lbw b|run out|retired hurt|c \& b|c|b) ((?:.(?! (?:b|\d+)))+.)/);
+                                    .match(/(.+?) (lbw b|hit wicket b|run out|retired hurt|c \& b|c|b) ((?:.(?! (?:b|\d+)))+.)/);
 
                                 fact = player_pretty_name(playerByShortName[dismissal[1]] || playerByLongName[dismissal[1]]) +
                                         " " + dismissal[2] +
