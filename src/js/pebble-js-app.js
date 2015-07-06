@@ -283,7 +283,7 @@ Pebble.addEventListener("appmessage", function (e) {
 
 Pebble.addEventListener("showConfiguration", function (e) {
     console.log("config requested");
-    Pebble.openURL("http://eatenbyagrue.org/a/sixfour.psgi");
+    Pebble.openURL("http://pebble.robn.io/sixfour/config.html");
 });
 
 Pebble.addEventListener("webviewclosed", function (e) {

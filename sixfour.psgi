@@ -1,4 +1,4 @@
-#!/usr/bin/env plackup
+#!/usr/bin/env perl
 
 use 5.020;
 use warnings;
@@ -28,6 +28,12 @@ my $app = sub {
 
     return [ 200, [ 'Content-type' => 'text/html' ], [ $output ] ];
 };
+
+if (caller) {
+    return \&app;
+}
+
+say for @{$app->()->[2]};
 
 __DATA__
 <!DOCTYPE html>
