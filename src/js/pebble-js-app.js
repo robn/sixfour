@@ -155,10 +155,6 @@ function unpack_data (data, out) {
 
             var facts = [];
 
-            if (data.live["break"]) {
-                facts.push(data.live["break"]);
-            }
-
             var factBall = localStorage.getItem("lastFactBall") || 0;
 
             console.log("lastFactBall: "+factBall);
@@ -206,6 +202,10 @@ function unpack_data (data, out) {
                     }
                 });
             });
+
+            if (data.live["break"]) {
+                facts.push(data.live["break"]);
+            }
 
             facts.forEach(function (fact) { console.log("FACT: "+fact); });
 
