@@ -107,9 +107,13 @@ function unpack_data (data, out) {
                         out.lead = "Run rate: "+innings.run_rate;
                         break;
                     default:
-                        out.lead =
-                            "Need "+(1-innings.lead)+" from "+
-                            (innings.remaining_overs <= 10.0 ? innings.remaining_balls : innings.remaining_overs+" ov");
+                        var t = new Date().getMinutes() % 2;
+                        if (t === 0) {
+                            out.lead = "Target "+(innings.target)+" ("+(1-innings.lead)+" from "+innings.remaining_balls+")";
+                        }
+                        else {
+                            out.lead = "CRR: "+innings.run_rate+"  RRR: "+innings.required_run_rate;
+                        }
                         break;
                 }
             }
